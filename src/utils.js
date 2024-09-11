@@ -26,3 +26,17 @@ export function createElement(name, props = {}, ...children) {
 
   return element;
 }
+
+export function pluralizeRaz(count) {
+  const pluralRules = new Intl.PluralRules('ru-RU');
+
+  const forms = {
+    one: 'раз',
+    few: 'раза',
+    many: 'раз',
+  };
+
+  const rule = pluralRules.select(count);
+
+  return forms[rule] || forms.many;
+}
