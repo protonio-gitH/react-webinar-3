@@ -6,7 +6,6 @@ class Store {
   constructor(initState = {}) {
     this.state = initState;
     this.listeners = []; // Слушатели изменений состояния
-    this.initialLength = this.state.list.length; // Изначальная длинна
     this.nextCode = {};
   }
 
@@ -64,7 +63,6 @@ class Store {
         { code: nextCode, title: 'Новая запись', selectedCount: 0 },
       ],
     });
-    this.initialLength = this.initialLength + 1;
   }
 
   /**
