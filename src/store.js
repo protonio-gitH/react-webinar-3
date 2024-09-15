@@ -1,11 +1,13 @@
 /**
  * Хранилище состояния приложения
  */
+
 class Store {
   constructor(initState = {}) {
     this.state = initState;
     this.listeners = []; // Слушатели изменений состояния
     this.initialLength = this.state.list.length; // Изначальная длинна
+    this.nextCode = {};
   }
 
   /**
@@ -40,14 +42,26 @@ class Store {
   }
 
   /**
+   * Генерация кода
+   */
+
+  generateCode(listKey) {
+    if (!this.nextCode[listKey]) {
+      this.nextCode[listKey] = (this.state[listKey]?.length || 0) + 1;
+    }
+    return this.nextCode[listKey]++;
+  }
+
+  /**
    * Добавление новой записи
    */
-  addItem() {
+  addItem(listKey) {
+    const nextCode = this.generateCode(listKey);
     this.setState({
       ...this.state,
-      list: [
-        ...this.state.list,
-        { code: this.initialLength + 1, title: 'Новая запись', selectedCount: 0 },
+      [listKey]: [
+        ...this.state[listKey],
+        { code: nextCode, title: 'Новая запись', selectedCount: 0 },
       ],
     });
     this.initialLength = this.initialLength + 1;
@@ -57,10 +71,10 @@ class Store {
    * Удаление записи по коду
    * @param code
    */
-  deleteItem(code) {
+  deleteItem(listKey, code) {
     this.setState({
       ...this.state,
-      list: this.state.list.filter(item => item.code !== code),
+      [listKey]: this.state[listKey].filter(item => item.code !== code),
     });
   }
 
@@ -68,10 +82,10 @@ class Store {
    * Выделение записи по коду
    * @param code
    */
-  selectItem(code) {
+  selectItem(listKey, code) {
     this.setState({
       ...this.state,
-      list: this.state.list.map(item => {
+      list: this.state[listKey].map(item => {
         if (item.code === code) {
           item.selected = !item.selected;
           if (item.selected) item.selectedCount += 1;
