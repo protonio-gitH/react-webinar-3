@@ -1,3 +1,4 @@
+import basket from './components/basket';
 import { generateCode } from './utils';
 
 /**
@@ -41,13 +42,70 @@ class Store {
   }
 
   /**
-   * Добавление новой записи
+   * Открытие/закрытие модалки
+   *
    */
-  addItem() {
+  openOrCloseModal() {
     this.setState({
       ...this.state,
-      list: [...this.state.list, { code: generateCode(), title: 'Новая запись' }],
+      isModalOpen: !this.state.isModalOpen,
     });
+  }
+
+  /**
+   * Добавление товара в корзину
+   * @param item {Object}
+   */
+  addItemToBasket(item) {
+    if (this.state.basketList.find(elem => elem.code === item.code)) {
+      this.setState({
+        ...this.state,
+        basketList: this.state.basketList.map(elem => {
+          if (elem.code === item.code) {
+            return {
+              ...elem,
+              count: elem.count + 1,
+            };
+          }
+          return elem;
+        }),
+      });
+    } else {
+      this.setState({
+        ...this.state,
+        basketList: [...this.state.basketList, { ...item, count: 1 }],
+      });
+    }
+  }
+
+  /**
+   * Удаление товара из корзины
+   * @param item {Object}
+   */
+  removeItemFromBasket(item) {
+    const existingItem = this.state.basketList.find(elem => elem.code === item.code);
+
+    if (existingItem) {
+      if (existingItem.count > 1) {
+        this.setState({
+          ...this.state,
+          basketList: this.state.basketList.map(elem => {
+            if (elem.code === item.code) {
+              return {
+                ...elem,
+                count: elem.count - 1,
+              };
+            }
+            return elem;
+          }),
+        });
+      } else {
+        this.setState({
+          ...this.state,
+          basketList: this.state.basketList.filter(elem => elem.code !== item.code),
+        });
+      }
+    }
   }
 
   /**
@@ -59,28 +117,6 @@ class Store {
       ...this.state,
       // Новый список, в котором не будет удаляемой записи
       list: this.state.list.filter(item => item.code !== code),
-    });
-  }
-
-  /**
-   * Выделение записи по коду
-   * @param code
-   */
-  selectItem(code) {
-    this.setState({
-      ...this.state,
-      list: this.state.list.map(item => {
-        if (item.code === code) {
-          // Смена выделения и подсчёт
-          return {
-            ...item,
-            selected: !item.selected,
-            count: item.selected ? item.count : item.count + 1 || 1,
-          };
-        }
-        // Сброс выделения если выделена
-        return item.selected ? { ...item, selected: false } : item;
-      }),
     });
   }
 }

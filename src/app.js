@@ -3,6 +3,12 @@ import List from './components/list';
 import Controls from './components/controls';
 import Head from './components/head';
 import PageLayout from './components/page-layout';
+import Underhead from './components/underhead';
+import Basket from './components/basket';
+import Item from './components/item';
+import useTotalSum from './hooks/useTotalSum';
+
+const renderItem = (item, onFunc) => <Item item={item} onFunc={onFunc} />;
 
 /**
  * Приложение
@@ -11,37 +17,49 @@ import PageLayout from './components/page-layout';
  */
 function App({ store }) {
   const list = store.getState().list;
+  const basketList = store.getState().basketList;
+  const isOpen = store.getState().isModalOpen;
+  const sum = useTotalSum(basketList);
 
   const callbacks = {
-    onDeleteItem: useCallback(
-      code => {
-        store.deleteItem(code);
+    onAddItemToBasket: useCallback(
+      item => {
+        store.addItemToBasket(item);
       },
       [store],
     ),
 
-    onSelectItem: useCallback(
-      code => {
-        store.selectItem(code);
+    onDeleteItemFromBasket: useCallback(
+      item => {
+        store.removeItemFromBasket(item);
       },
       [store],
     ),
 
-    onAddItem: useCallback(() => {
-      store.addItem();
+    onOpenOrCloseModal: useCallback(() => {
+      store.openOrCloseModal();
     }, [store]),
   };
 
   return (
-    <PageLayout>
-      <Head title="Приложение на чистом JS" />
-      <Controls onAdd={callbacks.onAddItem} />
-      <List
-        list={list}
-        onDeleteItem={callbacks.onDeleteItem}
-        onSelectItem={callbacks.onSelectItem}
+    <>
+      <PageLayout>
+        <Head title="Приложение на чистом JS" />
+        <Underhead
+          onOpenOrCloseModal={callbacks.onOpenOrCloseModal}
+          count={basketList.length}
+          sum={sum}
+        />
+        <List list={list} renderItem={renderItem} onFunc={callbacks.onAddItemToBasket} />
+      </PageLayout>
+      <Basket
+        list={basketList}
+        isOpen={isOpen}
+        isOpenOrCloseModal={callbacks.onOpenOrCloseModal}
+        onFunc={callbacks.onDeleteItemFromBasket}
+        sum={sum}
       />
-    </PageLayout>
+    </>
   );
 }
 

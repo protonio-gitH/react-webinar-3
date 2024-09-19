@@ -3,27 +3,25 @@ import PropTypes from 'prop-types';
 import { plural } from '../../utils';
 import './style.css';
 
-function Item(props) {
-  // Счётчик выделений
-  const [count, setCount] = useState(0);
-
-  const callbacks = {};
-
+function ItemBasket(props) {
   return (
     <div className={'Item'}>
       <div className="Item-code">{props.item.code}</div>
       <div className="Item-info">
         <div className="Item-title">{props.item.title}</div>
-        <div className="Item-price">{props.item.price} ₽</div>
+        <div className="Item-end">
+          <div className="Item-price">{props.item.price} ₽</div>
+          <div className="Item-count">{props.item.count} шт</div>
+        </div>
       </div>
       <div className="Item-actions">
-        <button onClick={() => props.onFunc(props.item)}>Добавить</button>
+        <button onClick={() => props.onFunc(props.item)}>Удалить</button>
       </div>
     </div>
   );
 }
 
-Item.propTypes = {
+ItemBasket.propTypes = {
   item: PropTypes.shape({
     code: PropTypes.number,
     title: PropTypes.string,
@@ -33,8 +31,8 @@ Item.propTypes = {
   onFunc: PropTypes.func,
 };
 
-Item.defaultProps = {
+ItemBasket.defaultProps = {
   onFunc: () => {},
 };
 
-export default React.memo(Item);
+export default React.memo(ItemBasket);
