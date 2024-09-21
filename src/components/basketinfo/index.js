@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { plural } from '../../utils';
 
 function BasketInfo({ count, sum }) {
   return (
@@ -7,7 +8,7 @@ function BasketInfo({ count, sum }) {
       В корзине:&nbsp;{' '}
       {count > 0 ? (
         <b>
-          {count} товара / {sum} ₽
+          {count} {plural(count, { one: 'товар', few: 'товара', many: 'товаров' })} / {sum} ₽
         </b>
       ) : (
         <b>пусто</b>
