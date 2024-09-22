@@ -1,20 +1,8 @@
-.Basket {
-  z-index: 1000;
-  position: fixed;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 100vw;
-  height: 100vh;
-  background-color: rgba(53, 53, 53, 0.3);
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-}
-
 .Basket-inner {
   width: 960px;
-  height: 407px;
+  max-height: 80vh;
+  overflow-y: auto;
+  border-radius: 10px;
 }
 
 .Basket-head {
@@ -30,15 +18,12 @@
 
 .Basket-body {
   padding: 70px 0 0 0;
-  min-width: 100%;
-  max-height: 40%;
   background-color: #ffffff;
-  overflow-y: auto;
 }
 
 .Basket-footer {
   background-color: #fff;
   display: flex;
   justify-content: flex-end;
-  padding: 30px 90px 80px 0;
+  padding: 5px 90px 60px 0;
 }

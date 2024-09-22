@@ -15,7 +15,7 @@ function ItemBasket(props) {
         </div>
       </div>
       <div className="Item-actions">
-        <button onClick={() => props.onFunc(props.item)}>Удалить</button>
+        <button onClick={() => props.onFunc(props.item.code)}>Удалить</button>
       </div>
     </div>
   );

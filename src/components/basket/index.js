@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import { cn as bem } from '@bem-react/classname';
 import List from '../list';
 import ItemBasket from '../item-basket';
-import useTotalSum from '../../hooks/useTotalSum';
+import ModalLayout from '../modal-layout';
 
 const renderItem = (item, onFunc) => <ItemBasket item={item} onFunc={onFunc} />;
 
@@ -14,7 +14,7 @@ function Basket({ isOpen, isOpenOrCloseModal, list, onFunc, sum }) {
 
   return (
     isOpen && (
-      <div className={cn()}>
+      <ModalLayout>
         <div className={cn('inner')}>
           <div className={cn('head')}>
             <Head title={'Корзина'} />
@@ -27,11 +27,11 @@ function Basket({ isOpen, isOpenOrCloseModal, list, onFunc, sum }) {
           </div>
           <div className={cn('footer')}>
             <p>
-              <b>Итого &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {sum} ₽</b>
+              <b>Итого &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {sum}</b>
             </p>
           </div>
         </div>
-      </div>
+      </ModalLayout>
     )
   );
 }

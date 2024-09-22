@@ -54,10 +54,11 @@ class Store {
 
   /**
    * Добавление товара в корзину
-   * @param item {Object}
+   * @param code {Number}
    */
-  addItemToBasket(item) {
-    if (this.state.basketList.find(elem => elem.code === item.code)) {
+  addItemToBasket(code) {
+    if (this.state.basketList.find(elem => elem.code === code)) {
+      const item = this.state.list.find(elem => elem.code === code);
       this.setState({
         ...this.state,
         basketList: this.state.basketList.map(elem => {
@@ -71,21 +72,24 @@ class Store {
         }),
       });
     } else {
+      const item = this.state.list.find(elem => elem.code === code);
       this.setState({
         ...this.state,
         basketList: [...this.state.basketList, { ...item, count: 1 }],
       });
     }
+    this.calculateTotalCost();
   }
 
   /**
    * Удаление товара из корзины
-   * @param item {Object}
+   * @param code {Number}
    */
-  removeItemFromBasket(item) {
-    const existingItem = this.state.basketList.find(elem => elem.code === item.code);
+  removeItemFromBasket(code) {
+    const existingItem = this.state.basketList.find(elem => elem.code === code);
 
     if (existingItem) {
+      const item = this.state.list.find(elem => elem.code === code);
       if (existingItem.count > 1) {
         this.setState({
           ...this.state,
@@ -100,12 +104,25 @@ class Store {
           }),
         });
       } else {
+        const item = this.state.list.find(elem => elem.code === code);
         this.setState({
           ...this.state,
-          basketList: this.state.basketList.filter(elem => elem.code !== item.code),
+          basketList: this.state.basketList.filter(elem => elem.code !== code),
         });
       }
     }
+    this.calculateTotalCost();
+  }
+
+  /**
+   * Подсчет общей стоимости корзины
+   */
+  calculateTotalCost() {
+    const totalCost = this.state.basketList.reduce((sum, item) => sum + item.price * item.count, 0);
+    this.setState({
+      ...this.state,
+      totalCost,
+    });
   }
 
   /**

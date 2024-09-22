@@ -8,7 +8,7 @@ function BasketInfo({ count, sum }) {
       В корзине:&nbsp;{' '}
       {count > 0 ? (
         <b>
-          {count} {plural(count, { one: 'товар', few: 'товара', many: 'товаров' })} / {sum} ₽
+          {count} {plural(count, { one: 'товар', few: 'товара', many: 'товаров' })} / {sum}
         </b>
       ) : (
         <b>пусто</b>

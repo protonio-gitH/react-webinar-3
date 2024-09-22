@@ -17,7 +17,7 @@ function Item(props) {
         <div className="Item-price">{props.item.price} ₽</div>
       </div>
       <div className="Item-actions">
-        <button onClick={() => props.onFunc(props.item)}>Добавить</button>
+        <button onClick={() => props.onFunc(props.item.code)}>Добавить</button>
       </div>
     </div>
   );

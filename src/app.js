@@ -18,8 +18,11 @@ const renderItem = (item, onFunc) => <Item item={item} onFunc={onFunc} />;
 function App({ store }) {
   const list = store.getState().list;
   const basketList = store.getState().basketList;
+  const sum = store
+    .getState()
+    .totalCost.toLocaleString('ru-RU', { style: 'currency', currency: 'RUB' });
   const isOpen = store.getState().isModalOpen;
-  const sum = useTotalSum(basketList);
+  // const sum = useTotalSum(basketList);
 
   const callbacks = {
     onAddItemToBasket: useCallback(
