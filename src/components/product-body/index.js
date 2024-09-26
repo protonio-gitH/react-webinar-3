@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { cn as bem } from '@bem-react/classname';
 import './style.css';
 
@@ -23,6 +24,24 @@ const ProductBody = ({ description, country, category, year, price, onAdd, id })
       <button onClick={() => onAdd(id)}>Добавить</button>
     </div>
   );
+};
+
+ProductBody.propTypes = {
+  description: PropTypes.string,
+  country: PropTypes.string,
+  category: PropTypes.string,
+  year: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+  price: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+  onAdd: PropTypes.func.isRequired,
+  id: PropTypes.string.isRequired,
+};
+
+ProductBody.defaultProps = {
+  description: 'Описание отсутствует',
+  country: 'Неизвестно',
+  category: 'Без категории',
+  year: 'Неизвестно',
+  price: '0',
 };
 
 export default React.memo(ProductBody);
