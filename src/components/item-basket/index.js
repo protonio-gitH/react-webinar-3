@@ -21,9 +21,11 @@ function ItemBasket(props) {
       </div>
       <div className={cn('right')}>
         <div className={cn('cell')}>{numberFormat(props.item.price)} ₽</div>
-        <div className={cn('cell')}>{numberFormat(props.item.amount || 0)} шт</div>
         <div className={cn('cell')}>
-          <button onClick={callbacks.onRemove}>Удалить</button>
+          {numberFormat(props.item.amount || 0)} {props.t('things')}
+        </div>
+        <div className={cn('cell')}>
+          <button onClick={callbacks.onRemove}>{props.t('delete')}</button>
         </div>
       </div>
     </div>
@@ -39,10 +41,12 @@ ItemBasket.propTypes = {
     link: PropTypes.string,
   }).isRequired,
   onRemove: propTypes.func,
+  t: PropTypes.func,
 };
 
 ItemBasket.defaultProps = {
   onRemove: () => {},
+  t: () => {},
 };
 
 export default memo(ItemBasket);

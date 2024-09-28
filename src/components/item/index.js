@@ -20,7 +20,7 @@ function Item(props) {
       </div>
       <div className={cn('actions')}>
         <div className={cn('price')}>{numberFormat(props.item.price)} ₽</div>
-        <button onClick={callbacks.onAdd}>Добавить</button>
+        <button onClick={callbacks.onAdd}>{props.t('add')}</button>
       </div>
     </div>
   );
@@ -34,10 +34,12 @@ Item.propTypes = {
     link: PropTypes.string,
   }).isRequired,
   onAdd: PropTypes.func,
+  t: PropTypes.func,
 };
 
 Item.defaultProps = {
   onAdd: () => {},
+  t: () => {},
 };
 
 export default memo(Item);

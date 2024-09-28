@@ -3,25 +3,27 @@ import PropTypes from 'prop-types';
 import { cn as bem } from '@bem-react/classname';
 import './style.css';
 
-const ProductBody = ({ description, country, category, year, price, onAdd, id }) => {
+const ProductBody = ({ description, country, category, year, price, onAdd, id, t }) => {
   const cn = bem('ProductBody');
 
   return (
     <div className={cn()}>
       <p className={cn('about')}>{description}</p>
       <p className={cn('country')}>
-        Страна производитель: <b>{country}</b>
+        {t('country')}: <b>{country}</b>
       </p>
       <p className={cn('category')}>
-        Категория: <b>{category}</b>
+        {t('category')}: <b>{category}</b>
       </p>
       <p className={cn('year')}>
-        Год выпуска: <b>{year}</b>
+        {t('year')}: <b>{year}</b>
       </p>
       <p className={cn('year')}>
-        <b>Цена: {price} ₽</b>
+        <b>
+          {t('price')}: {price} ₽
+        </b>
       </p>
-      <button onClick={() => onAdd(id)}>Добавить</button>
+      <button onClick={() => onAdd(id)}>{t('add')}</button>
     </div>
   );
 };

@@ -9,11 +9,13 @@ import { Link, useParams } from 'react-router-dom';
 import './style.css';
 import ProductBody from '../../components/product-body';
 import { numberFormat } from '../../utils';
+import { useLanguage } from '../../i18n';
 
 function Product() {
   const store = useStore();
   const params = useParams();
   const cn = bem('Product');
+  const { lang, setLang, t } = useLanguage();
 
   const select = useSelector(state => ({
     amount: state.basket.amount,
@@ -37,12 +39,17 @@ function Product() {
 
   return (
     <PageLayout>
-      <Head title={select.result.title} />
+      <Head title={select.result.title} lang={lang} setLang={setLang} />
       <div className={cn('header')}>
         <Link to="/" className="main-button">
-          Главная
+          {t('main')}
         </Link>
-        <BasketTool onOpen={callbacks.openModalBasket} amount={select.amount} sum={select.sum} />
+        <BasketTool
+          onOpen={callbacks.openModalBasket}
+          amount={select.amount}
+          sum={select.sum}
+          t={t}
+        />
       </div>
       <ProductBody
         description={select.result.description}
@@ -52,6 +59,7 @@ function Product() {
         price={numberFormat(select.result.price)}
         onAdd={callbacks.addToBasket}
         id={select.result._id}
+        t={t}
       />
     </PageLayout>
   );
