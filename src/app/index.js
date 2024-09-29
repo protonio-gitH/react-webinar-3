@@ -13,14 +13,6 @@ import { useParams } from 'react-router-dom';
  */
 function App() {
   const activeModal = useSelector(state => state.modals.name);
-  const store = useStore();
-
-  const params = useParams();
-
-  useEffect(() => {
-    const id = Number(params.id) ?? 1;
-    store.actions.catalog.load(id);
-  }, [params]);
 
   return (
     <>
@@ -30,7 +22,6 @@ function App() {
           <Route path="/product/:id" element={<Product />}></Route>
           <Route path="/" element={<Main />} />
           <Route path={'/:id'} element={<Main />} />
-          <Route path="*" element={<Main />} />
         </Routes>
       </BrowserRouter>
     </>

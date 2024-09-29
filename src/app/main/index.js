@@ -24,6 +24,11 @@ function Main() {
     page: state.catalog.page,
   }));
 
+  useEffect(() => {
+    const id = Number(params.id) || 1;
+    store.actions.catalog.load(id);
+  }, [params]);
+
   const callbacks = {
     // Добавление в корзину
     addToBasket: useCallback(_id => store.actions.basket.addToBasket(_id), [store]),
@@ -57,7 +62,7 @@ function Main() {
       <Pagination
         totalItems={select.count}
         onChangePage={callbacks.onChangePage}
-        number={Number(params.id) ?? select.page}
+        number={Number(params.id) || select.page}
         link={'/'}
       />
     </PageLayout>

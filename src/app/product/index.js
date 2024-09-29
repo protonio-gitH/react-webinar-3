@@ -40,17 +40,12 @@ function Product() {
   return (
     <PageLayout>
       <Head title={select.result.title} lang={lang} setLang={setLang} />
-      <div className={cn('header')}>
-        <Link to="/" className="main-button">
-          {t('main')}
-        </Link>
-        <BasketTool
-          onOpen={callbacks.openModalBasket}
-          amount={select.amount}
-          sum={select.sum}
-          t={t}
-        />
-      </div>
+      <BasketTool
+        onOpen={callbacks.openModalBasket}
+        amount={select.amount}
+        sum={select.sum}
+        t={t}
+      />
       <ProductBody
         description={select.result.description}
         country={select.result?.madeIn?.title}
