@@ -40,7 +40,7 @@ function Main() {
           <Item item={item} link={`/product/${item._id}`} onAdd={callbacks.addToBasket} t={t} />
         );
       },
-      [callbacks.addToBasket],
+      [callbacks.addToBasket, lang],
     ),
   };
 
