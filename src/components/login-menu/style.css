@@ -1,0 +1,9 @@
+.LoginMenu {
+  display: flex;
+  justify-content: end;
+  padding: 10px 20px;
+  margin: 0 auto;
+  max-width: 1024px;
+  background-color: #fff;
+  box-sizing: border-box;
+}

@@ -1,0 +1,12 @@
+.LoginForm {
+  padding: 20px;
+}
+
+.LoginForm-input-block {
+  margin-bottom: 15px;
+}
+
+label {
+  display: block;
+  margin-bottom: 2.5px;
+}
