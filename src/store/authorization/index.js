@@ -2,20 +2,10 @@ import StoreModule from '../module';
 
 class Authorization extends StoreModule {
   initState() {
-    const tokenData = localStorage.getItem('token');
-    let token = null;
-
-    if (tokenData) {
-      try {
-        token = JSON.parse(tokenData).token;
-      } catch (error) {
-        console.error('Ошибка парсинга token из localStorage:', error);
-      }
-    }
     return {
-      token,
+      token: null,
       exception: null,
-      isAuth: !!token,
+      isAuth: !!this.getState()?.token,
       waiting: false,
       profile: {},
     };
@@ -23,13 +13,14 @@ class Authorization extends StoreModule {
 
   async recoverySession() {
     this.setWaiting(true);
+    const token = localStorage.getItem('token');
+    this.setAuthState(token, false);
     const response = await this.fetchWithToken('api/v1/users/self?fields=*');
-
     if (response?.error) {
       this.setAuthState(null, false);
     } else {
       this.setProfileState(response.result);
-      this.setAuthState(this.getState().token, true);
+      this.setAuthState(token, true);
     }
   }
 
@@ -48,7 +39,7 @@ class Authorization extends StoreModule {
       }
 
       const token = json.result?.token;
-      localStorage.setItem('token', JSON.stringify({ token }));
+      localStorage.setItem('token', token);
       this.setAuthState(token, true);
       this.clearException();
 
@@ -61,10 +52,14 @@ class Authorization extends StoreModule {
   }
 
   async exit() {
-    localStorage.removeItem('token');
-    await this.fetchWithToken('/api/v1/users/sign', 'DELETE');
-    this.setAuthState(null, false);
-    this.setProfileState({});
+    try {
+      await this.fetchWithToken('/api/v1/users/sign', 'DELETE');
+      localStorage.removeItem('token');
+      this.setAuthState(null, false);
+      this.setProfileState({});
+    } catch (error) {
+      console.error('Logout error:', error);
+    }
   }
 
   clearException() {

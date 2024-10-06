@@ -26,8 +26,6 @@ function LoginForm({ onSubmit, exception, t }) {
       setError('Заполните все поля');
       return;
     }
-
-    setError('');
     onSubmit(formData.username.trim(), formData.password.trim());
   };
 
@@ -59,7 +57,7 @@ function LoginForm({ onSubmit, exception, t }) {
           <div style={{ color: 'red', marginTop: '10px', marginBottom: '10px' }}>{error}</div>
         )}
         <button onSubmit={handleSubmit} type="submit">
-          {t('login.title')}
+          {t('login.button')}
         </button>
       </form>
     </div>

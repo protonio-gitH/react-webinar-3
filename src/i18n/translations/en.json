@@ -18,6 +18,7 @@
   "login.title": "Login",
   "login.username": "Username",
   "login.password": "Password",
+  "login.button": "Login",
   "login.exit": "Exit",
   "profile": "Profile",
   "profile.name": "Name",

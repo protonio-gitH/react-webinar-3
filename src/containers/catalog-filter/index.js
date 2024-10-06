@@ -5,6 +5,7 @@ import useSelector from '../../hooks/use-selector';
 import Select from '../../components/select';
 import Input from '../../components/input';
 import SideLayout from '../../components/side-layout';
+import { buildTree, parseTree } from '../../utils';
 
 /**
  * Контейнер со всеми фильтрами каталога
@@ -43,12 +44,13 @@ function CatalogFilter() {
       ],
       [],
     ),
+    categories: useMemo(() => parseTree(buildTree(select.categories)), [select.categories]),
   };
   const { t } = useTranslate();
   return (
     <SideLayout padding="medium">
       <Select
-        options={[{ title: 'Все', value: 'all' }, ...select.categories]}
+        options={[{ title: 'Все', value: 'all' }, ...options.categories]}
         value={select.category}
         onChange={callbacks.onCategory}
       />
@@ -58,6 +60,7 @@ function CatalogFilter() {
         onChange={callbacks.onSearch}
         placeholder={'Поиск'}
         delay={1000}
+        width={300}
       />
       <button onClick={callbacks.onReset}>{t('filter.reset')}</button>
     </SideLayout>

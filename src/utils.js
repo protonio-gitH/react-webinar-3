@@ -75,3 +75,31 @@ export function buildTree(arr) {
 
   return res;
 }
+
+/**
+ * Преобразует древовидную структуру в плоский массив с указанием глубины каждого элемента.
+ * Каждый элемент дерева добавляется с префиксом, соответствующим его уровню вложенности (depth).
+ * Префикс состоит из повторяющихся символов "- ", соответствующих уровню глубины.
+ *
+ * @param items {Array<Object>} Массив объектов, представляющих элементы дерева.
+ *                              Каждый объект должен содержать _id (уникальный идентификатор),
+ *                              title (название элемента), и children (массив дочерних элементов).
+ * @param depth {Number} Уровень вложенности текущего элемента. По умолчанию равен 0.
+ *
+ * @returns {Array<Object>} Массив объектов с полями title и value:
+ *                          - title: строка с названием элемента, включающая префикс глубины.
+ *                          - value: уникальный идентификатор элемента (_id).
+ *                          Если элемент содержит дочерние элементы (children), они рекурсивно добавляются в массив.
+ */
+export function parseTree(items, depth = 0) {
+  return items.flatMap(item => {
+    const { _id, title, children } = item;
+    const prefix = '- '.repeat(depth);
+    const result = [{ title: `${prefix}${title}`.trim(), value: _id }];
+    if (children && children.length > 0) {
+      result.push(...parseTree(children, depth + 1));
+    }
+
+    return result;
+  });
+}

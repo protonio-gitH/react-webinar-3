@@ -6,4 +6,5 @@
   max-width: 1024px;
   background-color: #fff;
   box-sizing: border-box;
+  border-bottom: 1px solid #dcdcdc;
 }

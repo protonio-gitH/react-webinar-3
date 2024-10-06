@@ -13,7 +13,7 @@ function LoginMenu({ isAuth, onExit, loginLink, profileLink, profileName, t }) {
   };
   return (
     <div className={cn()}>
-      {!isAuth && <button onClick={handleLoginClick}>Войти</button>}
+      {!isAuth && <button onClick={handleLoginClick}>{t('login.title')}</button>}
       {isAuth && (
         <div>
           <Link to={profileLink} style={{ marginRight: '15px', fontSize: '13px' }}>

@@ -10,6 +10,7 @@ import Navigation from '../../containers/navigation';
 import Spinner from '../../components/spinner';
 import ArticleCard from '../../components/article-card';
 import LocaleSelect from '../../containers/locale-select';
+import LoginMenuContainer from '../../containers/login-menu';
 
 /**
  * Страница товара с первичной загрузкой товара по id из url адреса
@@ -38,6 +39,7 @@ function Article() {
 
   return (
     <PageLayout>
+      <LoginMenuContainer />
       <Head title={select.article.title}>
         <LocaleSelect />
       </Head>

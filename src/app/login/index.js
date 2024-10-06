@@ -9,6 +9,7 @@ import useStore from '../../hooks/use-store';
 import useSelector from '../../hooks/use-selector';
 import Spinner from '../../components/spinner';
 import { useNavigate } from 'react-router-dom';
+import LoginMenuContainer from '../../containers/login-menu';
 
 function Login() {
   const store = useStore();
@@ -18,7 +19,6 @@ function Login() {
     isAuth: state.authorization.isAuth,
     waiting: state.authorization.waiting,
     exception: state.authorization.exception,
-    profile: state.authorization.profile,
   }));
 
   const callbacks = {
@@ -29,8 +29,15 @@ function Login() {
     ),
   };
 
+  useEffect(() => {
+    return () => {
+      store.actions.authorization.clearException();
+    };
+  }, []);
+
   return (
     <PageLayout>
+      <LoginMenuContainer />
       <Head title={t('title')}>
         <LocaleSelect />
       </Head>

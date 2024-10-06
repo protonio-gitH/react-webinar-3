@@ -13,25 +13,9 @@ class CategoriesState extends StoreModule {
     try {
       const response = await fetch(`/api/v1/categories?fields=_id,title,parent(_id)&limit=*`);
       const json = await response.json();
-      const tree = buildTree(json.result.items);
-      const parseTree = (items, depth = 0) => {
-        return items.flatMap(item => {
-          const { _id, title, children } = item;
-          const prefix = '- '.repeat(depth);
-          const result = [{ title: `${prefix}${title}`.trim(), value: _id }];
-          if (children && children.length > 0) {
-            result.push(...parseTree(children, depth + 1));
-          }
-
-          return result;
-        });
-      };
-
-      const result = parseTree(tree);
-
       this.setState(
         {
-          category: result,
+          category: json.result.items,
         },
         'Загружены категории из АПИ',
       );

@@ -10,7 +10,7 @@ import useStore from '../hooks/use-store';
 import useInit from '../hooks/use-init';
 import Profile from './profile';
 import useTranslate from '../hooks/use-translate';
-import PrivateRoute from '../components/private-route';
+import PrivateRoute from './private-route';
 
 /**
  * Приложение
@@ -33,28 +33,15 @@ function App() {
     true,
   );
 
-  const callbacks = {
-    // Выход
-    exit: useCallback(() => store.actions.authorization.exit(), [store]),
-  };
-
   return (
     <>
-      <LoginMenu
-        isAuth={select.isAuth}
-        onExit={callbacks.exit}
-        loginLink={'/login'}
-        profileLink={'/profile'}
-        profileName={select.profile.profile?.name}
-        t={t}
-      />
       <Routes>
         <Route path={''} element={<Main />} />
         <Route path={'/articles/:id'} element={<Article />} />
         <Route
           path={'/login/'}
           element={
-            <PrivateRoute isAuth={select.isAuth}>
+            <PrivateRoute>
               <Login />
             </PrivateRoute>
           }
@@ -62,7 +49,7 @@ function App() {
         <Route
           path={'/profile/'}
           element={
-            <PrivateRoute isAuth={select.isAuth}>
+            <PrivateRoute>
               <Profile />
             </PrivateRoute>
           }

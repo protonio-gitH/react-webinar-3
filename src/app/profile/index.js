@@ -9,20 +9,19 @@ import useStore from '../../hooks/use-store';
 import useSelector from '../../hooks/use-selector';
 import Spinner from '../../components/spinner';
 import ProfileCard from '../../components/profile-card';
-import { useNavigate } from 'react-router-dom';
+import LoginMenuContainer from '../../containers/login-menu';
 
 function Profile() {
   const store = useStore();
   const { t } = useTranslate();
-  const navigate = useNavigate();
   const select = useSelector(state => ({
     waiting: state.authorization.waiting,
     profile: state.authorization.profile,
-    isAuth: state.authorization.isAuth,
   }));
 
   return (
     <PageLayout>
+      <LoginMenuContainer />
       <Head title={t('title')}>
         <LocaleSelect />
       </Head>
