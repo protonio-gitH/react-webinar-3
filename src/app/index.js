@@ -10,7 +10,7 @@ import useStore from '../hooks/use-store';
 import useInit from '../hooks/use-init';
 import Profile from './profile';
 import useTranslate from '../hooks/use-translate';
-import PrivateRoute from './private-route';
+import PrivateRoute from '../containers/private-route';
 
 /**
  * Приложение

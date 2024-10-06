@@ -8,3 +8,7 @@
   box-sizing: border-box;
   border-bottom: 1px solid #dcdcdc;
 }
+
+.LoginMenu-profile-name {
+  color: #0087e9;
+}

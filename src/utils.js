@@ -47,28 +47,36 @@ export function numberFormat(value, locale = 'ru-RU', options = {}) {
  */
 export function buildTree(arr) {
   let res = [];
+  let pending = [...arr];
 
-  while (arr.length > 0) {
-    const item = arr.shift();
+  while (pending.length > 0) {
+    const item = pending.shift();
     item.children = [];
+
     if (item.parent === null) {
       item.depth = 0;
       res.push(item);
-    }
-    if (item.parent?._id) {
+    } else if (item.parent?._id) {
       let queue = [...res];
+      let parentFound = false;
+
       while (queue.length > 0) {
         const elem = queue.shift();
 
         if (elem._id === item.parent._id) {
           item.depth = elem.depth + 1;
           elem.children.push(item);
+          parentFound = true;
           break;
         }
 
         if (elem.children.length > 0) {
           queue.push(...elem.children);
         }
+      }
+
+      if (!parentFound) {
+        pending.push(item);
       }
     }
   }

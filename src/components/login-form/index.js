@@ -3,10 +3,15 @@ import PropTypes from 'prop-types';
 import { cn as bem } from '@bem-react/classname';
 import './style.css';
 
-function LoginForm({ onSubmit, exception, t }) {
+function LoginForm({ onSubmit, exception, t, waiting }) {
   const [formData, setFormData] = useState({ username: '', password: '' });
   const [error, setError] = useState('');
+  const [disabled, setDisabled] = useState(false);
   const cn = bem('LoginForm');
+
+  useEffect(() => {
+    setDisabled(waiting);
+  }, [waiting]);
 
   useEffect(() => {
     setError(exception);
@@ -53,10 +58,8 @@ function LoginForm({ onSubmit, exception, t }) {
             onChange={handleChange}
           />
         </div>
-        {error && (
-          <div style={{ color: 'red', marginTop: '10px', marginBottom: '10px' }}>{error}</div>
-        )}
-        <button onSubmit={handleSubmit} type="submit">
+        {error && <div className={cn('error')}>{error}</div>}
+        <button onSubmit={handleSubmit} disabled={disabled}>
           {t('login.button')}
         </button>
       </form>
@@ -68,11 +71,13 @@ LoginForm.propTypes = {
   onSubmit: PropTypes.func.isRequired,
   exception: PropTypes.string,
   t: PropTypes.func.isRequired,
+  waiting: PropTypes.bool,
 };
 
 LoginForm.defaultProps = {
   exception: '',
   t: key => key,
+  waiting: false,
 };
 
 export default React.memo(LoginForm);

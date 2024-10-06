@@ -16,7 +16,11 @@ function LoginMenu({ isAuth, onExit, loginLink, profileLink, profileName, t }) {
       {!isAuth && <button onClick={handleLoginClick}>{t('login.title')}</button>}
       {isAuth && (
         <div>
-          <Link to={profileLink} style={{ marginRight: '15px', fontSize: '13px' }}>
+          <Link
+            className={cn('profile-name')}
+            to={profileLink}
+            style={{ marginRight: '15px', fontSize: '13px' }}
+          >
             {profileName}
           </Link>
           <button onClick={onExit}>{t('login.exit')}</button>

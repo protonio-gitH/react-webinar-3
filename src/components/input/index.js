@@ -31,7 +31,7 @@ function Input(props) {
       type={props.type}
       placeholder={props.placeholder}
       onChange={onChange}
-      style={{ width: `${props.width}px`, boxSizing: 'border-box' }}
+      style={{ boxSizing: 'border-box' }}
     />
   );
 }
@@ -43,14 +43,12 @@ Input.propTypes = {
   placeholder: PropTypes.string,
   onChange: PropTypes.func,
   theme: PropTypes.string,
-  width: PropTypes.number,
 };
 
 Input.defaultProps = {
   onChange: () => {},
   type: 'text',
   theme: '',
-  width: 200,
 };
 
 export default memo(Input);

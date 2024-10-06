@@ -43,7 +43,12 @@ function Login() {
       </Head>
       <Navigation />
       <Spinner active={select.waiting}>
-        <LoginForm onSubmit={callbacks.login} exception={select.exception} t={t} />
+        <LoginForm
+          onSubmit={callbacks.login}
+          exception={select.exception}
+          t={t}
+          waiting={select.waiting}
+        />
       </Spinner>
     </PageLayout>
   );

@@ -5,7 +5,7 @@ class Authorization extends StoreModule {
     return {
       token: null,
       exception: null,
-      isAuth: !!this.getState()?.token,
+      isAuth: false,
       waiting: false,
       profile: {},
     };
@@ -14,17 +14,26 @@ class Authorization extends StoreModule {
   async recoverySession() {
     this.setWaiting(true);
     const token = localStorage.getItem('token');
-    this.setAuthState(token, false);
-    const response = await this.fetchWithToken('api/v1/users/self?fields=*');
-    if (response?.error) {
-      this.setAuthState(null, false);
+
+    if (token) {
+      this.setAuthState(token, false);
+      const response = await this.fetchWithToken('api/v1/users/self?fields=*');
+
+      if (response?.error) {
+        this.setAuthState(null, false);
+      } else {
+        this.setProfileState(response.result);
+        this.setAuthState(token, true);
+      }
     } else {
-      this.setProfileState(response.result);
-      this.setAuthState(token, true);
+      this.setAuthState(null, false);
     }
+
+    this.setWaiting(false);
   }
 
   async login(login, password) {
+    this.setWaiting(true);
     try {
       const response = await fetch('/api/v1/users/sign', {
         method: 'POST',
@@ -35,6 +44,7 @@ class Authorization extends StoreModule {
       const json = await response.json();
       if (json?.error) {
         this.setException(json.error.data.issues[0].message);
+        this.setWaiting(false);
         return;
       }
 
@@ -43,12 +53,12 @@ class Authorization extends StoreModule {
       this.setAuthState(token, true);
       this.clearException();
 
-      // Получение профиля пользователя после успешного входа
       await this.recoverySession();
     } catch (error) {
       console.error('Login error:', error);
       this.setException('Произошла ошибка при входе. Попробуйте позже.');
     }
+    this.setWaiting(false);
   }
 
   async exit() {
@@ -66,7 +76,6 @@ class Authorization extends StoreModule {
     this.setException(null);
   }
 
-  // Вспомогательные методы
   async fetchWithToken(url, method = 'GET') {
     try {
       const response = await fetch(url, {
