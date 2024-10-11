@@ -1,0 +1,16 @@
+.ArticleCard-comments {
+  padding: 20px 40px;
+}
+
+.ArticleCard-comments-count {
+  font-size: 24px;
+  margin-top: 50px;
+  margin-bottom: 30px;
+}
+
+.ArticleCard-comments-list {
+  /* display: flex; */
+  flex-direction: column;
+  gap: 30px 0;
+  margin-bottom: 30px;
+}

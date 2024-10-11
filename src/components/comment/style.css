@@ -1,0 +1,40 @@
+.ArticleCard-comments-item-top {
+  display: flex;
+  gap: 0 10px;
+  margin-bottom: 10px;
+}
+
+.ArticleCard-comments-item {
+  margin-bottom: 30px;
+}
+
+.ArticleCard-comments-item-date {
+  color: rgb(102, 102, 102);
+  font-size: 12px;
+  font-weight: 400;
+}
+
+.ArticleCard-comments-item-name {
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.ArticleCard-comments-item-text {
+  font-size: 14px;
+  font-weight: 400;
+  margin-bottom: 10px;
+  word-wrap: break-word;
+}
+
+.ArticleCard-comments-item-btn {
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  color: rgb(0, 135, 233);
+  padding: 0;
+  font-size: 12px;
+}
+
+.currentName {
+  color: rgb(102, 102, 102);
+}

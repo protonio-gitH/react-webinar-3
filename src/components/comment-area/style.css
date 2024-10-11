@@ -1,0 +1,39 @@
+.CommentArea {
+  display: none;
+}
+
+.CommentArea.Main {
+  display: block;
+}
+
+.CommentArea.CommentArea--active {
+  display: block;
+  margin-top: 30px;
+}
+
+.CommentArea--margin {
+  margin-bottom: 30px;
+}
+
+.CommentArea-area {
+  width: 100%;
+  min-height: 76px;
+  resize: none;
+  margin-bottom: 10px;
+}
+
+.CommentArea-title {
+  font-size: 12px;
+  font-weight: 700;
+  margin-bottom: 10px;
+}
+
+.CommentArea-send-btn {
+  margin-right: 10px;
+}
+
+.CommentArea-not-logged-in span {
+  color: rgb(102, 102, 102);
+  text-decoration: underline;
+  cursor: pointer;
+}
