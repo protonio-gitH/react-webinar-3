@@ -1,4 +1,4 @@
-import React, { memo, useCallback } from 'react';
+import React, { memo, useCallback, useState } from 'react';
 import PropTypes from 'prop-types'; // Импортируем PropTypes
 import { cn as bem } from '@bem-react/classname';
 import './style.css';
@@ -17,10 +17,15 @@ const Comments = ({
   loginNavigate,
 }) => {
   const cn = bem('ArticleCard');
+  const [isMainAreaVisible, setIsMainAreaVisible] = useState(true);
+  const [activeReplyId, setActiveReplyId] = useState(null);
 
   const renderItem = useCallback(
     item => (
       <Comment
+        setIsMainAreaVisible={setIsMainAreaVisible}
+        activeReplyId={activeReplyId}
+        setActiveReplyId={setActiveReplyId}
         currentName={currentName}
         item={item}
         isAuth={isAuth}
@@ -31,7 +36,15 @@ const Comments = ({
         loginNavigate={loginNavigate}
       />
     ),
-    [currentName, isAuth, load, createAnswerComment, createFirstComment, loginNavigate],
+    [
+      currentName,
+      isAuth,
+      load,
+      createAnswerComment,
+      createFirstComment,
+      loginNavigate,
+      activeReplyId,
+    ],
   );
 
   return (
@@ -39,16 +52,18 @@ const Comments = ({
       <div className={cn('comments-count')}>Комментарии ({count})</div>
 
       {list && list.length > 0 && <CommentsList list={list} render={renderItem} />}
-
-      <CommentArea
-        loginNavigate={loginNavigate}
-        mainClass="Main"
-        parent={1}
-        title="Новый комментарий"
-        createFirstComment={createFirstComment}
-        load={load}
-        isAuth={isAuth}
-      />
+      {isMainAreaVisible && (
+        <CommentArea
+          isAreaVisible={isMainAreaVisible}
+          loginNavigate={loginNavigate}
+          mainClass="Main"
+          parent={1}
+          title="Новый комментарий"
+          createFirstComment={createFirstComment}
+          load={load}
+          isAuth={isAuth}
+        />
+      )}
     </div>
   );
 };

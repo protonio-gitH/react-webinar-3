@@ -6,6 +6,9 @@ import './style.css';
 import CommentsList from '../comments-list';
 
 const Comment = ({
+  activeReplyId,
+  setActiveReplyId,
+  setIsMainAreaVisible,
   item,
   createAnswerComment,
   load,
@@ -15,9 +18,7 @@ const Comment = ({
   currentName,
   loginNavigate,
 }) => {
-  const [replyId, setReplyId] = useState(null);
   const cn = bem('ArticleCard');
-  const commentAreaRef = useRef(null);
 
   const formatter = new Intl.DateTimeFormat('ru', {
     day: 'numeric',
@@ -27,31 +28,12 @@ const Comment = ({
     minute: 'numeric',
   });
 
-  useEffect(() => {
-    const buttons = document.querySelectorAll('.ArticleCard-comments-item-btn');
-    const areas = document.querySelectorAll('.CommentArea');
-    const activeClass = 'CommentArea--active';
-
-    const handleButtonClick = button => {
-      areas.forEach(area => area.classList.remove(activeClass));
-      const targetArea = [...areas].find(area => area?.dataset?.id === button?.dataset?.id);
-      if (targetArea) {
-        targetArea.classList.add(activeClass, 'CommentArea--margin');
-        document.querySelector('.Main').style.display = 'none';
-        targetArea.scrollIntoView({ block: 'end', behavior: 'smooth' });
-      }
-    };
-
-    buttons.forEach(button => button.addEventListener('click', () => handleButtonClick(button)));
-
-    return () => {
-      buttons.forEach(button => button.removeEventListener('click', () => {}));
-    };
-  }, []);
-
   const renderItem = useCallback(
     i => (
       <Comment
+        setIsMainAreaVisible={setIsMainAreaVisible}
+        activeReplyId={activeReplyId}
+        setActiveReplyId={setActiveReplyId}
         key={i._id}
         currentName={currentName}
         item={i}
@@ -63,10 +45,24 @@ const Comment = ({
         loginNavigate={loginNavigate}
       />
     ),
-    [currentName, isAuth, load, lvl, createAnswerComment, createFirstComment, loginNavigate],
+    [
+      currentName,
+      isAuth,
+      load,
+      lvl,
+      createAnswerComment,
+      createFirstComment,
+      loginNavigate,
+      activeReplyId,
+    ],
   );
 
-  const margin = Math.min(lvl * 15, 10);
+  const replyHandler = () => {
+    setIsMainAreaVisible(false);
+    setActiveReplyId(item._id);
+  };
+
+  const margin = lvl >= 10 ? 10 : lvl == 1 ? 0 : lvl * 15;
 
   return (
     <>
@@ -91,27 +87,30 @@ const Comment = ({
               <button
                 className={cn('comments-item-btn')}
                 data-id={item?._id}
-                onClick={() => setReplyId(item._id)}
+                onClick={replyHandler}
               >
                 Ответить
               </button>
             </div>
           </div>
           <CommentsList list={item.children} render={renderItem} />
-          <CommentArea
-            ref={commentAreaRef}
-            loginNavigate={loginNavigate}
-            margin={margin}
-            parent={item._id}
-            title="Новый ответ"
-            cancel={true}
-            createAnswerComment={createAnswerComment}
-            createFirstComment={createFirstComment}
-            itemId={replyId}
-            load={load}
-            isAuth={isAuth}
-            lvl={lvl}
-          />
+          {activeReplyId === item._id && (
+            <CommentArea
+              setIsMainAreaVisible={setIsMainAreaVisible}
+              setActiveReplyId={setActiveReplyId}
+              authorName={item?.author?.profile?.name || currentName}
+              loginNavigate={loginNavigate}
+              margin={margin}
+              parent={item._id}
+              title="Новый ответ"
+              cancel={true}
+              createAnswerComment={createAnswerComment}
+              createFirstComment={createFirstComment}
+              load={load}
+              isAuth={isAuth}
+              lvl={lvl}
+            />
+          )}
         </>
       )}
     </>
@@ -119,6 +118,9 @@ const Comment = ({
 };
 
 Comment.propTypes = {
+  activeReplyId: PropTypes.string,
+  setActiveReplyId: PropTypes.func,
+  setIsMainAreaVisible: PropTypes.func,
   item: PropTypes.shape({
     _id: PropTypes.string.isRequired,
     text: PropTypes.string.isRequired,

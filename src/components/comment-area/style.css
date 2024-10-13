@@ -1,5 +1,5 @@
 .CommentArea {
-  display: none;
+  /* display: none; */
 }
 
 .CommentArea.Main {
@@ -20,6 +20,7 @@
   min-height: 76px;
   resize: none;
   margin-bottom: 10px;
+  padding: 5px;
 }
 
 .CommentArea-title {

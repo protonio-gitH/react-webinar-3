@@ -18,64 +18,37 @@ import Comments from '../../components/comments';
 import articleActions from '../../store-redux/article/actions';
 import commentsActions from '../../store-redux/comments/actions';
 import { cn as bem } from '@bem-react/classname';
+import CommentsContainer from '../../containers/comments';
 
 function Article() {
   const store = useStore();
-  const services = useServices();
   const cn = bem('ArticleCard');
   const dispatch = useDispatch();
   const params = useParams();
-  const location = useLocation();
-  const navigate = useNavigate();
+
   const { t, lang } = useTranslate();
 
-  // Инициализация загрузки данных
   useInit(() => {
     dispatch(commentsActions.load(params.id));
     dispatch(articleActions.load(params.id));
   }, [params.id, lang]);
 
-  // Селекторы состояния
   const select = useSelector(
     state => ({
       article: state.article.data,
       waiting: state.article.waiting,
       count: state.comments.count,
       list: state.comments.list,
-      isWaiting: state.comments.isWaiting,
     }),
     shallowequal,
   );
 
   const selectStore = useSelectorStore(state => ({
     exists: state.session.exists,
-    user: state.session.user,
   }));
 
-  const currentName = selectStore.user?.profile?.name;
-
-  // Обработчики событий
   const callbacks = {
     addToBasket: useCallback(_id => store.actions.basket.addToBasket(_id), [store]),
-    createFirstComment: useCallback(
-      (value, type) => dispatch(commentsActions.createComment(params.id, value, type)),
-      [dispatch, params.id],
-    ),
-    createAnswerComment: useCallback(
-      (id, value, type) => dispatch(commentsActions.createComment(id, value, type)),
-      [dispatch],
-    ),
-    loadComments: useCallback(
-      () => dispatch(commentsActions.load(params.id)),
-      [dispatch, params.id],
-    ),
-    loginNavigate: useCallback(
-      e => {
-        e.preventDefault();
-        navigate('/login', { state: { back: location.pathname } });
-      },
-      [navigate, location.pathname],
-    ),
   };
 
   return (
@@ -95,16 +68,7 @@ function Article() {
           list={select.list}
         />
       </Spinner>
-      <Comments
-        loginNavigate={callbacks.loginNavigate}
-        currentName={currentName}
-        isAuth={selectStore.exists}
-        list={select.list}
-        count={select.count}
-        createFirstComment={callbacks.createFirstComment}
-        createAnswerComment={callbacks.createAnswerComment}
-        load={callbacks.loadComments}
-      />
+      <CommentsContainer />
     </PageLayout>
   );
 }

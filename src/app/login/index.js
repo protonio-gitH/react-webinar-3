@@ -9,24 +9,15 @@ import Field from '../../components/field';
 import SideLayout from '../../components/side-layout';
 import TopHead from '../../containers/top-head';
 import { useLocation, useNavigate } from 'react-router-dom';
-import useStore from '../../hooks/use-store';
-import useSelector from '../../hooks/use-selector';
 import useInit from '../../hooks/use-init';
 
 function Login() {
   const { t } = useTranslate();
   const location = useLocation();
-  const navigate = useNavigate();
-  const store = useStore();
 
   useInit(() => {
     store.actions.session.resetErrors();
   });
-
-  const select = useSelector(state => ({
-    waiting: state.session.waiting,
-    errors: state.session.errors,
-  }));
 
   const [data, setData] = useState({
     login: '',
