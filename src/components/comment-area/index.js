@@ -68,7 +68,7 @@ const CommentArea = ({
             onChange={e => setArea(e.target.value)}
             value={area}
           />
-          <button className={cn('send-btn')} onClick={onSend}>
+          <button className={cn('send-btn')} onClick={onSend} disabled={!area}>
             Отправить
           </button>
           {cancel && (
